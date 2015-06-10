@@ -98,6 +98,10 @@ static void _update_cutoff(struct devfreq_msm_adreno_tz_data *priv,
 	}
 }
 
+#ifdef CONFIG_ADRENO_IDLER
+extern int adreno_idler(struct devfreq_dev_status stats, struct devfreq *devfreq,
+		 unsigned long *freq);
+#endif
 static int tz_get_target_freq(struct devfreq *devfreq, unsigned long *freq,
 				u32 *flag)
 {
@@ -135,14 +139,22 @@ static int tz_get_target_freq(struct devfreq *devfreq, unsigned long *freq,
 	 * Force to use & record as min freq when system has
 	 * entered pm-suspend or screen-off state.
 	 */
+<<<<<<< HEAD
 	if (suspended || state_suspended) {
+=======
+	if (suspended || power_suspended) {
+>>>>>>> 933b472... devfreq: adreno_idler: Introduce Adreno idler for devfreq-based devices
 		*freq = devfreq->profile->freq_table[devfreq->profile->max_state - 1];
 		return 0;
 	}
 
 #ifdef CONFIG_ADRENO_IDLER
+<<<<<<< HEAD
 	if (adreno_idler_active &&
 			adreno_idler(stats, devfreq, freq)) {
+=======
+	if (adreno_idler(stats, devfreq, freq)) {
+>>>>>>> 933b472... devfreq: adreno_idler: Introduce Adreno idler for devfreq-based devices
 		/* adreno_idler has asked to bail out now */
 		return 0;
 	}
